@@ -1,42 +1,42 @@
-export { openModal, closeModal, closeModalOverlay, closeModalButton };
-
 //Функция открытия popup
-function openModal(popupElement) {
-  popupElement.classList.add("popup_is-opened");
+function openModal(popup) {
+  popup.classList.add("popup_is-opened");
   document.addEventListener("keydown", closeModalEsc);
 }
 
 //Функция закрытия popup
-function closeModal(popupElement) {
-  popupElement.classList.remove("popup_is-opened");
+function closeModal(popup) {
+  popup.classList.remove("popup_is-opened");
   document.removeEventListener("keydown", closeModalEsc);
 }
 
 //Закрытия popup клавишей Esc
 const closeModalEsc = (e) => {
   if (e.key === "Escape") {
-    const popupElement = document.querySelector(".popup_is-opened"); // находим открытый попап
-    closeModal(popupElement);
+    const popup = document.querySelector(".popup_is-opened"); // находим открытый попап
+    closeModal(popup);
   }
 };
 
-//Закрытия popup Overlay
-function closeModalOverlay() {
-  const popupElement = document.querySelector(".popup_is-opened"); // находим открытый попап
-  popupElement.addEventListener("click", (evt) => {
-    if (evt.currentTarget === evt.target) {
-      closeModal(popupElement);
-    }
-  });
-  popupElement.removeEventListener("click", closeModalOverlay);
+// Обработчик клика по оверлею
+function handleCloseModalByOverlay(evt) {
+  if (evt.target === evt.currentTarget) {
+    closeModal(evt.currentTarget);
+  }
 }
 
-//Закрытия popup крестиком
-function closeModalButton() {
-  const popupElement = document.querySelector(".popup_is-opened");
-  const closeButton = popupElement.querySelector(".popup__close");
-  closeButton.addEventListener("click", () => {
-    closeModal(popupElement);
-    popupElement.removeEventListener("click", closeModalButton);
+// Функция установки обработчиков закрытия попапов
+function setCloseModalByClickListeners(popupList) {
+  popupList.forEach((popup) => {
+    // Находим кнопку закрытия попапа
+    const closeButton = popup.querySelector(".popup__close");
+
+    // Вешаем обработчик закрытия на кнопку
+    closeButton.addEventListener("click", () => closeModal(popup));
+
+    // Вешаем обработчик закрытия на оверлей
+    popup.addEventListener("click", handleCloseModalByOverlay);
   });
 }
+
+export { openModal, closeModal, setCloseModalByClickListeners };
