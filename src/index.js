@@ -56,7 +56,7 @@ editButton.addEventListener("click", function () {
 });
 
 // Форма редактирования профиля
-function formEditProfile(evt) {
+function handleProfileEditFormSubmit(evt) {
   evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
   const name = nameInput.value;
   const about = jobInput.value;
@@ -75,5 +75,5 @@ function handlePlaceAddFormSubmit(evt) {
   closeModal(popupNewCard);
 }
 
-editProfileForm.addEventListener("submit", formEditProfile);
+editProfileForm.addEventListener("submit", handleProfileEditFormSubmit);
 newPlaceForm.addEventListener("submit", handlePlaceAddFormSubmit);
