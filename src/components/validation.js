@@ -1,12 +1,3 @@
-export const validationConfig = {
-  formSelector: ".popup__form",
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__button",
-  inactiveButtonClass: "popup__button_disabled",
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_visible",
-};
-
 const showInputError = (
   formElement,
   inputElement,
@@ -119,7 +110,6 @@ export const clearValidation = (formElement, validationConfig) => {
       validationConfig.inputErrorClass
     );
     input.setCustomValidity("");
-    input.removeEventListener("input", checkInputValidity);
   });
 
   // Обновление состояния кнопки отправки

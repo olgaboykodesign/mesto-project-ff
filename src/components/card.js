@@ -1,10 +1,17 @@
-import { openImagePopup } from "../index.js";
 import { putLikesCard, unLikesCard, deleteMyCard } from "./api.js";
 
 const templateCard = document.querySelector("#card-template").content;
-const content = document.querySelector(".content");
 
-function createCard(name, link, id, likes, owner, handleLikeClick, userId) {
+function createCard(
+  name,
+  link,
+  id,
+  likes,
+  owner,
+  openImagePopup,
+  handleLikeClick,
+  userId
+) {
   const placesItem = templateCard.querySelector(".card").cloneNode(true);
   const cardImg = placesItem.querySelector(".card__image");
   const cardName = placesItem.querySelector(".card__title");

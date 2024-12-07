@@ -6,11 +6,7 @@ import {
   postNewCard,
   patchAvatar,
 } from "./components/api.js";
-import {
-  validationConfig,
-  enableValidation,
-  clearValidation,
-} from "./components/validation.js";
+import { enableValidation, clearValidation } from "./components/validation.js";
 import {
   openModal,
   closeModal,
@@ -23,11 +19,12 @@ const placesList = document.querySelector(".places__list");
 const popup = document.querySelectorAll(".popup");
 const addButton = document.querySelector(".profile__add-button");
 const editButton = document.querySelector(".profile__edit-button");
-const popupNewCard = document.querySelector(".popup_type_new-card");
 
+const popupNewCard = document.querySelector(".popup_type_new-card");
 const newPlaceForm = document.forms["new-place"];
 const placeNameInput = document.querySelector(".popup__input_type_card-name");
 const linkInput = document.querySelector(".popup__input_type_url");
+const buttonNewCard = popupNewCard.querySelector(".popup__button");
 
 const editProfileForm = document.forms["edit-profile"];
 const nameInput = document.querySelector(".popup__input_type_name");
@@ -36,6 +33,7 @@ const jobInput = document.querySelector(".popup__input_type_description");
 const popupEdit = document.querySelector(".popup_type_edit");
 const profileTitle = document.querySelector(".profile__title");
 const profileDescription = document.querySelector(".profile__description");
+const buttonEditProfile = popupEdit.querySelector(".popup__button");
 
 const popupImage = document.querySelector(".popup__image");
 const popupCaption = document.querySelector(".popup__caption");
@@ -47,7 +45,16 @@ const popupEditProfileAvatar = document.querySelector(
   ".popup_type_edit_avatar"
 );
 const editAvatarInput = document.querySelector(".popup__input_type_avatar");
-const button = popupEditProfileAvatar.querySelector(".popup__button");
+const buttonEditAvatar = popupEditProfileAvatar.querySelector(".popup__button");
+
+const validationConfig = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};
 
 let userId = "";
 
@@ -89,7 +96,7 @@ function handleProfileEditFormSubmit(evt) {
   evt.preventDefault();
   const name = nameInput.value;
   const about = jobInput.value;
-  button.textContent = "Сохранение...";
+  buttonEditProfile.textContent = "Сохранение...";
   patchUserInfo(name, about)
     .then((data) => {
       profileTitle.textContent = data.name;
@@ -100,7 +107,7 @@ function handleProfileEditFormSubmit(evt) {
       console.log(err);
     })
     .finally(() => {
-      button.textContent = "Сохранить";
+      buttonEditProfile.textContent = "Сохранить";
     });
 }
 
@@ -109,7 +116,7 @@ function handlePlaceAddFormSubmit(evt) {
   evt.preventDefault();
   const name = placeNameInput.value;
   const link = linkInput.value;
-  button.textContent = "Сохранение...";
+  buttonNewCard.textContent = "Сохранение...";
   postNewCard(name, link)
     .then((data) => {
       const newCard = createCard(
@@ -118,6 +125,7 @@ function handlePlaceAddFormSubmit(evt) {
         data._id,
         data.likes,
         data.owner,
+        openImagePopup,
         handleLikeClick,
         userId
       );
@@ -128,7 +136,7 @@ function handlePlaceAddFormSubmit(evt) {
       console.log("Полученные данные при создании карточки:", data);
     })
     .finally(() => {
-      button.textContent = "Сохранить";
+      buttonNewCard.textContent = "Сохранить";
     });
 }
 
@@ -140,7 +148,7 @@ function addNewCard(placesItem) {
 function handleProfileAvatarForm(evt) {
   evt.preventDefault();
   const avatar = editAvatarInput.value;
-  button.textContent = "Сохранение...";
+  buttonEditAvatar.textContent = "Сохранение...";
   patchAvatar(avatar)
     .then((data) => {
       editProfileAvatarImage.style.backgroundImage = `url('${data.avatar}')`;
@@ -151,7 +159,7 @@ function handleProfileAvatarForm(evt) {
       console.log(err); // выводим ошибку в консоль
     })
     .finally(() => {
-      button.textContent = "Сохранить";
+      buttonEditAvatar.textContent = "Сохранить";
     });
 }
 
@@ -172,6 +180,7 @@ Promise.all([getUser(), getInitialCards()])
         item._id,
         item.likes,
         item.owner,
+        openImagePopup,
         handleLikeClick,
         userId
       );

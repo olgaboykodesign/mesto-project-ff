@@ -17,21 +17,13 @@ const handleRes = (res) => {
 export const getUser = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
-  })
-    .then(handleRes)
-    .catch((error) => {
-      console.error("Ошибка при получении пользователя:", error);
-    });
+  }).then(handleRes);
 };
 
 export const getInitialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers,
-  })
-    .then(handleRes)
-    .catch((error) => {
-      console.error("Ошибка при получении пользователя:", error);
-    });
+  }).then(handleRes);
 };
 
 export const patchUserInfo = (name, about) => {
